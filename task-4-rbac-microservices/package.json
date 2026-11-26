@@ -1,0 +1,7 @@
+{
+  "name": "task-4-rbac-microservice-ecosystem",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JWT RBAC API gateway, user and order microservices with RabbitMQ event messaging",
+  "scripts": { "test": "node test/smoke.js" }
+}
