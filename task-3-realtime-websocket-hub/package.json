@@ -1,0 +1,11 @@
+{
+  "name": "task-3-realtime-websocket-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Authenticated Socket.IO chat hub with Redis adapter and persistent event log",
+  "main": "src/server.js",
+  "scripts": {"start":"node src/server.js","dev":"node --watch src/server.js","test":"node --test"},
+  "engines":{"node":">=20"},
+  "dependencies":{"cors":"^2.8.5","dotenv":"^16.4.7","express":"^4.21.2","ioredis":"^5.4.2","jsonwebtoken":"^9.0.2","socket.io":"^4.8.1","@socket.io/redis-adapter":"^8.3.0"},
+  "devDependencies":{"socket.io-client":"^4.8.1"}
+}
