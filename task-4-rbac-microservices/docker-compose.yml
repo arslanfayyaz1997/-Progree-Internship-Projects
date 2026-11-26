@@ -1,0 +1,42 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    ports: ["5672:5672", "15672:15672"]
+    environment:
+      RABBITMQ_DEFAULT_USER: app
+      RABBITMQ_DEFAULT_PASS: app_password_change_me
+    volumes: [rabbit_data:/var/lib/rabbitmq]
+  users:
+    build: ./users
+    environment:
+      PORT: 4301
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-this}
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: AdminPass123!
+    ports: ["4301:4301"]
+  orders:
+    build: ./orders
+    environment:
+      PORT: 4302
+      RABBITMQ_URL: amqp://app:app_password_change_me@rabbitmq:5672
+    depends_on: [rabbitmq]
+    ports: ["4302:4302"]
+  event-worker:
+    build: ./worker
+    environment:
+      RABBITMQ_URL: amqp://app:app_password_change_me@rabbitmq:5672
+    depends_on: [rabbitmq]
+    volumes: [worker_events:/data]
+  gateway:
+    build: ./gateway
+    environment:
+      PORT: 4300
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-this}
+      USERS_URL: http://users:4301
+      ORDERS_URL: http://orders:4302
+    depends_on: [users, orders]
+    ports: ["4300:4300"]
+volumes:
+  rabbit_data:
+  worker_events:
